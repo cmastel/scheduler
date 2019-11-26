@@ -1,5 +1,4 @@
 import React from 'react';
-// import InterviewerListItem from './InterviewerListItem'
 import "components/Appointment/styles.scss";
 const classNames = require('classnames')
 
