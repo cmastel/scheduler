@@ -2,13 +2,21 @@ import React from 'react';
 import DayListItem from './DayListItem'
 
 export default function DayList(props) {
-  const { days } = props;
+  const { days, day: dayProp, setDay } = props;
 
-  const renderDays = days.map(day => <DayListItem {...day} />)
-    return (
-      <section class="days-container">
-        {renderDays}
-      </section>
-    )
-  }
+  const renderDays = days.map(day => 
+    <DayListItem 
+      key={day.id}
+      name={day.name}
+      spots={day.spots}
+      selected={day.name === dayProp}
+      setDay={() => setDay(day.name)} />
+  )
+
+  return (
+    <ul>
+      {renderDays}
+    </ul>
+  )
+}
   
