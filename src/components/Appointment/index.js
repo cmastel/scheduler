@@ -6,8 +6,6 @@ import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Form from "components/Appointment/Form";
 import useVisualMode from "hooks/useVisualMode";
-import { create } from "domain";
-// import { tsPropertySignature } from "@babel/types";
 
 
 export default function Appointment(props) {
@@ -21,7 +19,6 @@ export default function Appointment(props) {
   return (
     <article className="appointment">
       <Header time={props.time} />
-      {/* {mode === EMPTY && <Empty onAdd={props.onAdd} />} */}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
         <Show
@@ -31,7 +28,7 @@ export default function Appointment(props) {
       )}
       {mode === CREATE && (
         <Form 
-          interviewers={[]}
+          interviewers={props.interviewers}
           onCancel={() => transition(EMPTY)}
         />
       )}
