@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "components/Application.scss";
 import Appointment from "components/Appointment";
-import DayList from './DayList'
+import DayList from './DayList';
+import { getAppointmentsForDay } from "../../src/helpers/selectors";
+
 
 const axios = require('axios').default;
 
@@ -24,52 +26,52 @@ const axios = require('axios').default;
 //   },
 // ];
 
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-    interview: {
-      student: "Santa Claus",
-      interviewer: {
-        id: 5,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
-      }
-    }
-  },
-  {
-    id: 4,
-    time: "3pm",
-  },
-  {
-    id: 5,
-    time: "4pm",
-    interview: {
-      student: "Jabba the Hutt",
-      interviewer: {
-        id: 3,
-        name: "Mildred Nazir",
-        avatar: "https://i.imgur.com/T2WwVfS.png",
-      }
-    }
-  },
-];
+// const appointments = [
+//   {
+//     id: 1,
+//     time: "12pm",
+//   },
+//   {
+//     id: 2,
+//     time: "1pm",
+//     interview: {
+//       student: "Lydia Miller-Jones",
+//       interviewer: {
+//         id: 1,
+//         name: "Sylvia Palmer",
+//         avatar: "https://i.imgur.com/LpaY82x.png",
+//       }
+//     }
+//   },
+//   {
+//     id: 3,
+//     time: "2pm",
+//     interview: {
+//       student: "Santa Claus",
+//       interviewer: {
+//         id: 5,
+//         name: "Sven Jones",
+//         avatar: "https://i.imgur.com/twYrpay.jpg",
+//       }
+//     }
+//   },
+//   {
+//     id: 4,
+//     time: "3pm",
+//   },
+//   {
+//     id: 5,
+//     time: "4pm",
+//     interview: {
+//       student: "Jabba the Hutt",
+//       interviewer: {
+//         id: 3,
+//         name: "Mildred Nazir",
+//         avatar: "https://i.imgur.com/T2WwVfS.png",
+//       }
+//     }
+//   },
+// ];
 
 
 // ------------------------- APPLICATION FUNCTION -------------------- //
@@ -89,7 +91,7 @@ export default function Application(props) {
       axios.get("http://localhost:8001/api/appointments")
     ])
     .then(res => {
-      console.log(res);
+      console.log('promise res', res);
       setState(prev => ({
         ...prev,
         days: res[0].data,
@@ -97,6 +99,12 @@ export default function Application(props) {
       }))
     })
   }, [])
+
+  let appointments = [];
+  for (let day of state.days) {
+    const dayArr = getAppointmentsForDay(state, day.name)
+    appointments = [appointments, ...dayArr]
+  }
 
   const renderSchedule = appointments.map(appointment =>
     <Appointment
