@@ -74,9 +74,6 @@ const appointments = [
 
 // ------------------------- APPLICATION FUNCTION -------------------- //
 export default function Application(props) {
-  // const [day, setDay] = useState("Monday");
-  // const [days, setDays] = useState([]);
-
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -84,12 +81,20 @@ export default function Application(props) {
   })
 
   const setDay = day => setState({ ...state, day });
-  const setDays = days => setState(prev => ({ ...prev, days }));
+  // const setDays = days => setState(prev => ({ ...prev, days }));
 
   useEffect(() => {
-    axios.get("http://localhost:8001/api/days")
-    .then((response) => {
-      setDays(response.data);
+    Promise.all([
+      axios.get("http://localhost:8001/api/days"),
+      axios.get("http://localhost:8001/api/appointments")
+    ])
+    .then(res => {
+      console.log(res);
+      setState(prev => ({
+        ...prev,
+        days: res[0].data,
+        appointments: res[1].data,
+      }))
     })
   }, [])
 
