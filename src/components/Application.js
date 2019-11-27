@@ -1,27 +1,28 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import "components/Application.scss";
 import Appointment from "components/Appointment";
 import DayList from './DayList'
 
+const axios = require('axios').default;
+
 // ---------------------- GLOBAL VARIABLES -------------- //
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
+// const days = [
+//   {
+//     id: 1,
+//     name: "Monday",
+//     spots: 2,
+//   },
+//   {
+//     id: 2,
+//     name: "Tuesday",
+//     spots: 5,
+//   },
+//   {
+//     id: 3,
+//     name: "Wednesday",
+//     spots: 0,
+//   },
+// ];
 
 const appointments = [
   {
@@ -73,13 +74,29 @@ const appointments = [
 
 // ------------------------- APPLICATION FUNCTION -------------------- //
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  
+  // const [day, setDay] = useState("Monday");
+  // const [days, setDays] = useState([]);
+
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  })
+
+  const setDay = day => setState({ ...state, day });
+  const setDays = days => setState(prev => ({ ...prev, days }));
+
+  useEffect(() => {
+    axios.get("http://localhost:8001/api/days")
+    .then((response) => {
+      setDays(response.data);
+    })
+  }, [])
+
   const renderSchedule = appointments.map(appointment =>
     <Appointment
       key={props.id}
       {...appointment}
-
     />
     )
 
@@ -94,8 +111,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            day={day}
+            days={state.days}
+            day={state.day}
             setDay={setDay}
           />
         </nav>
