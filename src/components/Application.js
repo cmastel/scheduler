@@ -25,7 +25,6 @@ export default function Application(props) {
       axios.get("http://localhost:8001/api/appointments"),
       axios.get("http://localhost:8001/api/interviewers")
     ]).then(res => {
-      // console.log("promise res", res);
       setState(prev => ({
         ...prev,
         days: res[0].data,
@@ -55,6 +54,24 @@ export default function Application(props) {
     })
   };
 
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return axios.delete(`http://localhost:8001/api/appointments/${id}`)
+    .then(() => {
+      setState({
+        ...state,
+        appointments
+      });
+    });
+  };
+
 
 
   const appointments = getAppointmentsForDay(state, state.day);
@@ -70,6 +87,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
