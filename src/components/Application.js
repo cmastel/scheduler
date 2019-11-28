@@ -44,10 +44,15 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState({
-      ...state,
-      appointments
-    });
+    return axios.put(`http://localhost:8001/api/appointments/${id}`, 
+      {interview: appointment.interview}
+    )
+    .then(() => {
+      setState({
+        ...state,
+        appointments
+      });
+    })
   };
 
 
@@ -64,7 +69,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
-        bookInterview={(id, interview) => bookInterview(id, interview)}
+        bookInterview={bookInterview}
       />
     );
   });
