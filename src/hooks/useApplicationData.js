@@ -1,17 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 const axios = require("axios").default;
 
 
 export default function useApplicationData() {
   
-  const [state, setState] = useState({
+  const SET_DAY = "SET_DAY";
+  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+  const SET_INTERVIEW = "SET_INTERVIEW";
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case SET_DAY:
+        return { 
+          ...state, 
+          day: action.day 
+        }
+      case SET_APPLICATION_DATA:
+        return { 
+          ...state, 
+          days: action.days,
+          appointments: action.appointments,
+          interviewers: action.interviewers
+        }
+      case SET_INTERVIEW:
+
+        return {
+          ...state,
+          interview: action.interview
+         }
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${action.type}`
+        );
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
   });
 
-  const setDay = day => setState({ ...state, day });
+  const setDay = day => dispatch({ type: SET_DAY, day });
 
   useEffect(() => {
     Promise.all([
@@ -19,12 +50,12 @@ export default function useApplicationData() {
       axios.get("http://localhost:8001/api/appointments"),
       axios.get("http://localhost:8001/api/interviewers")
     ]).then(res => {
-      setState(prev => ({
-        ...prev,
-        days: res[0].data,
+      dispatch({ 
+        type: SET_APPLICATION_DATA, 
+        days: res[0].data, 
         appointments: res[1].data,
         interviewers: res[2].data
-      }));
+      });
     });
   }, []);
 
@@ -41,11 +72,12 @@ export default function useApplicationData() {
       {interview: appointment.interview}
     )
     .then(() => {
-      setState({
-        ...state,
-        appointments
+      dispatch({
+        type: SET_INTERVIEW,
+        id,
+        interview,
       });
-    })
+    });
   };
 
   function cancelInterview(id) {
@@ -59,9 +91,9 @@ export default function useApplicationData() {
     };
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
     .then(() => {
-      setState({
-        ...state,
-        appointments
+      dispatch({
+        type: SET_INTERVIEW,
+        id,
       });
     });
   };
