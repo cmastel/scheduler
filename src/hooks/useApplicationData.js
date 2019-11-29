@@ -96,12 +96,19 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const dayIndex = Math.floor((id - 1)/ 5)
+    const newSpots = state.days[dayIndex].spots + 1;
+    const newDays = [
+      ...state.days.slice(0, (dayIndex)), 
+      { ...state.days[dayIndex], spots: newSpots },
+      ...state.days.slice((dayIndex + 1))
+    ]
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
     .then(() => {
       dispatch({
         type: SET_INTERVIEW,
         appointments,
-        spotChange: 1,
+        newDays,
       });
     });
   };
