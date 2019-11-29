@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 const axios = require("axios").default;
 
 
@@ -23,10 +23,10 @@ export default function useApplicationData() {
           interviewers: action.interviewers
         }
       case SET_INTERVIEW:
-
         return {
           ...state,
-          interview: action.interview
+          appointments: action.appointments,
+          days: action.newDays,
          }
       default:
         throw new Error(
@@ -68,14 +68,21 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const dayIndex = Math.floor((id - 1)/ 5)
+    const newSpots = state.days[dayIndex].spots - 1;
+    const newDays = [
+      ...state.days.slice(0, (dayIndex)), 
+      { ...state.days[dayIndex], spots: newSpots },
+      ...state.days.slice((dayIndex + 1))
+    ]     
     return axios.put(`http://localhost:8001/api/appointments/${id}`, 
       {interview: appointment.interview}
     )
     .then(() => {
       dispatch({
         type: SET_INTERVIEW,
-        id,
-        interview,
+        appointments,
+        newDays,
       });
     });
   };
@@ -93,7 +100,8 @@ export default function useApplicationData() {
     .then(() => {
       dispatch({
         type: SET_INTERVIEW,
-        id,
+        appointments,
+        spotChange: 1,
       });
     });
   };
