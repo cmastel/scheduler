@@ -59,6 +59,18 @@ export default function useApplicationData() {
     });
   }, []);
 
+  function getNewDays(dayChange) {
+    const dayName = state.day;
+    const dayIndex = state.days.findIndex((element) => element.name === dayName);
+    const newSpots = state.days[dayIndex].spots + dayChange;
+    const newDays = [
+      ...state.days.slice(0, (dayIndex)), 
+      { ...state.days[dayIndex], spots: newSpots },
+      ...state.days.slice((dayIndex + 1))
+    ]   
+    return newDays;
+  }
+
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -68,13 +80,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    const dayIndex = Math.floor((id - 1)/ 5)
-    const newSpots = state.days[dayIndex].spots - 1;
-    const newDays = [
-      ...state.days.slice(0, (dayIndex)), 
-      { ...state.days[dayIndex], spots: newSpots },
-      ...state.days.slice((dayIndex + 1))
-    ]     
+    const newDays = getNewDays(-1); 
     return axios.put(`http://localhost:8001/api/appointments/${id}`, 
       {interview: appointment.interview}
     )
@@ -96,13 +102,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    const dayIndex = Math.floor((id - 1)/ 5)
-    const newSpots = state.days[dayIndex].spots + 1;
-    const newDays = [
-      ...state.days.slice(0, (dayIndex)), 
-      { ...state.days[dayIndex], spots: newSpots },
-      ...state.days.slice((dayIndex + 1))
-    ]
+    const newDays = getNewDays(1)
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
     .then(() => {
       dispatch({
@@ -114,5 +114,4 @@ export default function useApplicationData() {
   };
 
   return { state, setDay, bookInterview, cancelInterview }
-
 }
