@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer } from "react";
-const axios = require("axios").default;
-
+import axios from 'axios';
+if (process.env.NODE_ENV !== 'test'){
+  axios.create({ baseURL: 'http://localhost:8001'})
+}
 
 export default function useApplicationData() {
   
@@ -46,10 +48,11 @@ export default function useApplicationData() {
 
   useEffect(() => {
     Promise.all([
-      axios.get("http://localhost:8001/api/days"),
-      axios.get("http://localhost:8001/api/appointments"),
-      axios.get("http://localhost:8001/api/interviewers")
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers")
     ]).then(res => {
+      console.log('res', res)
       dispatch({ 
         type: SET_APPLICATION_DATA, 
         days: res[0].data, 
