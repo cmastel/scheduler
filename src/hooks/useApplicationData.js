@@ -52,7 +52,6 @@ export default function useApplicationData() {
       axios.get("/api/appointments"),
       axios.get("/api/interviewers")
     ]).then(res => {
-      console.log('res', res)
       dispatch({ 
         type: SET_APPLICATION_DATA, 
         days: res[0].data, 
@@ -75,6 +74,7 @@ export default function useApplicationData() {
   }
 
   function bookInterview(id, interview) {
+    const dayChange = (state.appointments[id].interview ? 0 : -1);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -83,8 +83,8 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    const newDays = getNewDays(-1); 
-    return axios.put(`http://localhost:8001/api/appointments/${id}`, 
+    const newDays = getNewDays(dayChange); 
+    return axios.put(`/api/appointments/${id}`, 
       {interview: appointment.interview}
     )
     .then(() => {
