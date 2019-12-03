@@ -1,12 +1,11 @@
+// ------------- Jest tests ------------- //
 import React from "react";
 
 import { render, cleanup, fireEvent } from "@testing-library/react";
 
 import Form from "components/Appointment/Form";
-import { jsxEmptyExpression } from "@babel/types";
 
 afterEach(cleanup);
-
 
 describe("Form", () => {
   const interviewers = [

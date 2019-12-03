@@ -1,3 +1,5 @@
+// ------------- Jest tests ------------- //
+
 import React from "react";
 
 import { render, 

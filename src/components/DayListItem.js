@@ -3,6 +3,7 @@ import React from 'react';
 import "components/DayListItem.scss";
 const classNames = require('classnames')
 
+// define how the output of Remaining Spots is shown
 const formatSpots = function(spots) {
   if (spots === 1) {
     return '1 spot';
@@ -17,7 +18,6 @@ export default function DayListItem(props) {
     "day-list__item--full": props.spots === 0,
   })
 
-  
   return (
     <li 
       data-testid="day"

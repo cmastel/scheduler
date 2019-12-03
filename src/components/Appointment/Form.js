@@ -6,16 +6,22 @@ export default function Form(props) {
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
+  
+  // clears name and interviewer when Cancel button is clicked
   const reset = function() {
     setName("");
     setInterviewer(null);
   };
 
+  // called from click of Cancel button
   const cancel = function() {
     reset();
     props.onCancel();
   }
 
+  // When Form is to be saved, checks if name is filled out
+  // Allows the save to proceed if it is,
+  // Does not save if no name is present, shows error
   function validate() {
     if (name === "") {
       setError("Student name cannot be blank");
@@ -24,7 +30,6 @@ export default function Form(props) {
     setError("");
     props.onSave(name, interviewer);
   }
-
 
   return (
     <main className="appointment__card appointment__card--create">

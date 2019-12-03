@@ -1,3 +1,5 @@
+// ------------- mock functions and data for Jest tests ------------- //
+
 const fixtures = {
   days: [
     {

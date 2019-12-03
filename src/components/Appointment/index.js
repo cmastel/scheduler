@@ -12,6 +12,7 @@ import useVisualMode from "hooks/useVisualMode";
 
 
 export default function Appointment(props) {
+  // define Visual Modes
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
@@ -25,6 +26,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  // applies transition when saving and calls function to update state
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -40,6 +42,7 @@ export default function Appointment(props) {
     })
   };
 
+    // applies transition when deleting and calls function to update state
   function deleteInterview() {
     transition(DELETING, true);
     props.cancelInterview(props.id)
@@ -50,6 +53,7 @@ export default function Appointment(props) {
       transition(ERROR_DELETE, true)
     })
   };
+  
   return (
     <article data-testid="appointment" className="appointment">
       <Header time={props.time} />

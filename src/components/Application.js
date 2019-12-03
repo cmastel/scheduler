@@ -5,13 +5,9 @@ import DayList from "./DayList";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../../src/helpers/selectors";
 import useApplicationData from "../hooks/useApplicationData";
 
-
-// const axios = require("axios").default;
-
-
-// ------------------------- APPLICATION FUNCTION -------------------- //
 export default function Application(props) {
 
+  // define variables based on useApplicationData hook
   const {
     state,
     setDay,
@@ -19,8 +15,10 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
+  // define the array of interviewers from selector function
   const interviewers = getInterviewersForDay(state, state.day);
 
+  // define the array of appointments from selector function, map with appropriate props
   const appointments = getAppointmentsForDay(state, state.day).map(appointment => {
     return (
       <Appointment

@@ -5,6 +5,9 @@ import reducer, {
   SET_APPLICATION_DATA,
   SET_INTERVIEW
 } from '../reducers/application'
+
+// check if app is running in development or test, 
+// if not in test, assigns the localhost as baseURL
 if (process.env.NODE_ENV !== 'test'){
   axios.create({ baseURL: 'http://localhost:8001'})
 }
@@ -19,6 +22,9 @@ export default function useApplicationData() {
 
   const setDay = day => dispatch({ type: SET_DAY, day });
 
+  // controls API requests to get information from database
+  // uses dispatch to assign the returned data to appropriate
+  // variable
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
@@ -34,6 +40,8 @@ export default function useApplicationData() {
     });
   }, []);
 
+  // returns an object of days so that the state can be updated in bookInterview
+  // and cancelInterview
   function getNewDays(dayChange) {
     const dayName = state.day;
     const dayIndex = state.days.findIndex((element) => element.name === dayName);
@@ -46,8 +54,10 @@ export default function useApplicationData() {
     return newDays;
   }
 
+  // updates the database with information when the Save button is clicked
+  // in either a New appointment or Edit
   function bookInterview(id, interview) {
-    const dayChange = (state.appointments[id].interview ? 0 : -1);
+    const dayChange = (state.appointments[id].interview ? 0 : -1); // define how spots remaining is adjusted based on New or Edit
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -69,6 +79,8 @@ export default function useApplicationData() {
     });
   };
 
+  // updates the database with information when the Delete button is Confirmed
+  // Spots Remaining is also adjusted
   function cancelInterview(id) {
     const appointment = {
       ...state.appointments[id],
