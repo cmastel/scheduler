@@ -4,6 +4,11 @@ Interview Scheduler is a React application that allows users to book, edit, and 
 
 It has been developed using React, and tested with Jest for Integration testing and Cypress for End-to-End testing.
 
+This application is hosted on Netlify:
+\
+https://objective-sinoussi-8f997b.netlify.com
+
+
 ## Final Product
 
 Scheduler Main Page:
