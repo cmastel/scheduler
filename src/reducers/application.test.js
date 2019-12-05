@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react"
 
 import reducer, {
   SET_DAY,
   SET_APPLICATION_DATA,
   SET_INTERVIEW
-} from './application'
+} from "./application"
 
 import { render, 
   cleanup, 

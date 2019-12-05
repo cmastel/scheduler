@@ -15,7 +15,7 @@ import { render,
 
 import Application from "components/Application";
 import { fireEvent } from "@testing-library/react/dist";
-import axios from 'axios';
+import axios from "axios";
 
 afterEach(cleanup);
 

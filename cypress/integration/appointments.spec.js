@@ -3,15 +3,15 @@ describe("Appointments", () => {
   beforeEach(() => {
     cy.request("GET", "/api/debug/reset")
     cy.visit("/");
-    cy.contains('Monday')
+    cy.contains("Monday")
   });
 
   it("book an interview", () => {
-    cy.get('[alt=Add]')
+    cy.get("[alt=Add]")
       .first()
       .click();
-    cy.get('[data-testid=student-name-input]')
-      .type('Lydia Miller-Jones');
+    cy.get("[data-testid=student-name-input]")
+      .type("Lydia Miller-Jones");
     cy.get("[alt='Sylvia Palmer']")
       .click();
     cy.contains("Save")
@@ -21,12 +21,12 @@ describe("Appointments", () => {
   });
 
   it("should edit an interview", () => {
-    cy.get('[data-testid=appointment]')
+    cy.get("[data-testid=appointment]")
       .contains("Archie Cohen")
     cy.get("[alt=Edit]").click({ force: true })
-    cy.get('[data-testid=student-name-input]')
+    cy.get("[data-testid=student-name-input]")
       .clear()
-      .type('Santa Claus');
+      .type("Santa Claus");
     cy.get("[alt='Tori Malcolm']")
       .click();
     cy.contains("Save")

@@ -1,15 +1,15 @@
 import React, { useEffect, useReducer } from "react";
-import axios from 'axios';
+import axios from "axios";
 import reducer, {
   SET_DAY,
   SET_APPLICATION_DATA,
   SET_INTERVIEW
-} from '../reducers/application'
+} from "../reducers/application";
 
 // check if app is running in development or test, 
 // if not in test, assigns the localhost as baseURL
-if (process.env.NODE_ENV !== 'test'){
-  axios.create({ baseURL: 'http://localhost:8001'})
+if (process.env.NODE_ENV !== "test"){
+  axios.create({ baseURL: "http://localhost:8001"})
 }
 
 export default function useApplicationData() {

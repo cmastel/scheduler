@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
 import "components/DayListItem.scss";
-const classNames = require('classnames')
+const classNames = require("classnames")
 
 // define how the output of Remaining Spots is shown
 const formatSpots = function(spots) {
   if (spots === 1) {
-    return '1 spot';
+    return "1 spot";
   }
-  return (spots === 0 ? 'no spots' : `${spots} spots`);
+  return (spots === 0 ? "no spots" : `${spots} spots`);
 }
 
 export default function DayListItem(props) {
