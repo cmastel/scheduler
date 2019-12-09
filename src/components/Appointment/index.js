@@ -28,6 +28,7 @@ export default function Appointment(props) {
 
   // applies transition when saving and calls function to update state
   function save(name, interviewer) {
+    console.log('interviewer', interviewer)
     const interview = {
       student: name,
       interviewer

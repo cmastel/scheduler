@@ -19,12 +19,18 @@ export default function Form(props) {
     props.onCancel();
   }
 
-  // When Form is to be saved, checks if name is filled out
+  // When Form is to be saved, checks if Name is filled out
+  // and if an Interviewer is selected
   // Allows the save to proceed if it is,
-  // Does not save if no name is present, shows error
+  // Does not save if no name or interviewer is present, shows error
   function validate() {
     if (name === "") {
       setError("Student name cannot be blank");
+      return;
+    }
+    setError("");
+    if (interviewer === null) {
+      setError("Interviewer name cannot be blank");
       return;
     }
     setError("");
