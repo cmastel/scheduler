@@ -5,12 +5,13 @@ export default function useVisualMode(initial) {
   const [history, setHistory] = useState([initial])
 
   // defines how view transitions are handled
-  function transition(next, replace = false) {
+  function transition(mode, replace = false) {
     if (replace === true) {
       history.pop();
+      setHistory(history)
     }
-    history.push(next);
-    setMode(() => next);
+    setHistory(prev => [...prev, mode]);
+    setMode(mode);
   }
 
   // defines what view is presented when back is called based on
@@ -18,10 +19,10 @@ export default function useVisualMode(initial) {
   function back() {
     if (history.length > 1) {
       history.pop();
-      const prevMode = history[history.length - 1]
-      setMode(() => prevMode);
+      setMode(mode => history[history.length - 1])
     }
   }
 
   return { mode, transition, back };
 };
+
