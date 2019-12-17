@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
@@ -17,9 +17,12 @@ export default function useVisualMode(initial) {
   // defines what view is presented when back is called based on
   // stored history
   function back() {
+    console.log('set mode', history[history.length - 1])
+    console.log('back history', history)
     if (history.length > 1) {
       history.pop();
-      setMode(mode => history[history.length - 1])
+      setHistory(history)
+      setMode(history[history.length - 1])
     }
   }
 
